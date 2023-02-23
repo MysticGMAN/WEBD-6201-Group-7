@@ -4,5 +4,5 @@
 
 This (Group 7) includes Conner Tammane & Grayson Closs.
 
-This is the Grayson branch that ***should***.
+This is the Grayson branch that ***should*** be pushed to.
                                                                                                
