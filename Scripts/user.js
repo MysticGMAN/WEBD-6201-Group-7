@@ -8,7 +8,6 @@
             this.EmailAddress = emailAddress;
             this.Username = username;
             this.Password = password;
-
         }
 
         get DisplayName(){return this.m_displayName;}
