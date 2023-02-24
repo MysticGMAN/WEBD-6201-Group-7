@@ -301,7 +301,6 @@ function ValidateRegisterFields(input_field_id, reg_expr, err_msg) {
     });
 }
 
-
 function ValidateContactForm(){
     new ValidateField("#Name",
         /^([A-Z][a-z]{1,3}\.?\s)?([A-Z][a-z]+)+([\s,-]([A-z][a-z]+))*$/,
