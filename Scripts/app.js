@@ -366,6 +366,7 @@ function DisplayRegisterPage() {
     let emailAddress = document.getElementById("emailAddress");
     let password = document.getElementById("password");
 
+
     /*sendButton.addEventListener("click", function()){
         let userInfo = new core.User(firstName.value, lastName.value, username.value, emailAddress.value, password.value);
 
