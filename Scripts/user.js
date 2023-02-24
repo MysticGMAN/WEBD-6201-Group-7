@@ -3,12 +3,11 @@
 (function (core) {
     class User {
 
-        constructor(displayName = "", emailAddress = "", username = "", password = "") {
-            this.DisplayName = displayName;
+        constructor(firstName = "", lastName = "", emailAddress = "", username = "", password = "") {
+            this.DisplayName = firstName + " " + lastName;
             this.EmailAddress = emailAddress;
             this.Username = username;
             this.Password = password;
-
         }
 
         get DisplayName(){return this.m_displayName;}
@@ -25,8 +24,7 @@
             return this.m_password;
         }
 
-        set DisplayName(displayName){this.m_displayName = displayName;}
-
+        set DisplayName(displayName){this.m_displayName = displayName}
         set EmailAddress(emailAddress){this.m_emailAddress = emailAddress;}
 
         set Username(username){this.m_username = username;}
@@ -72,5 +70,5 @@
         }
 
     }
-    core.Contact = Contact;
+    core.User = User;
 })(core || (core = {}));

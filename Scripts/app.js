@@ -2,11 +2,15 @@
 
 //IIFE - Immediately Invoked Function Expression
 (function(){
+
+
     function Start()
     {
         console.log("App Started")
 
         AjaxRequest("GET", "header.html", LoadHeader);
+
+        AjaxRequest("GET", "login.html", CheckLogin);
 
         switch(document.title){
             case "Home":
@@ -54,7 +58,7 @@ function AjaxRequest(method, url, callback){
 
             if (typeof callback === "function") {
                 callback(xhr.responseText);
-                console.log(xhr.responseText);
+                // console.log(xhr.responseText);
             }else{
                 console.error("Error: callback is not a valid function");
             }
@@ -203,10 +207,7 @@ function DisplayContactListPage() {
         $("button.edit").on("click", function(){
            location.href = "edit.html#" + $(this).val();
         });
-
-
     }
-
 }
 
 // function TestName() {
@@ -264,7 +265,6 @@ function ValidateField(input_field_id, reg_expr, err_msg) {
             // messageArea.removeClass("alert-danger").addClass("alert-success").text(
             //     "Succes");
             messageArea.removeAttr("class").hide();
-
         }
     });
 }
@@ -333,24 +333,28 @@ function DisplayLoginPage() {
         let success = false;
         let newUser = new core.User();
 
+
         $.get("../data/user.json", function(data){
 
             for(const u of data.user){
                 if(username.value === u.Username && password.value === u.Password){
-                    newUser.fromJSON(user);
+                    newUser.fromJSON(u);
+                    success = true;
                     break;
                 }
             }
-
             if(success){
 
                 sessionStorage.setItem("user", newUser.serialize());
+                console.log(sessionStorage.getItem("user"));
                 messageArea.removeAttr("class").hide();
+
+                CheckLogin();
 
             }else{
                 $("#username").trigger("focus").trigger("select");
                 messageArea.addClass("alert alert-danger")
-                    .text("Error: Invalid Credentials");
+                    .text("Error: Invalid Credentials").show();
             }
         });
 
@@ -360,14 +364,20 @@ function DisplayLoginPage() {
             location.href = "index.html";
 
         });
-
     });
 }
 
 function CheckLogin() {
 
     if(sessionStorage.getItem("user")){
-        $("#login").html(`<a id="logout" class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>`)
+
+        let userData = sessionStorage.getItem("user");
+        let loggedUser = new core.User();
+        loggedUser.deserialize(userData);
+        console.log(loggedUser.Username);
+        $("#login").html(`<a id="logout" class="nav-link" href="#">
+            <i class="fas fa-sign-out-alt"></i> Logout</a>`);
+        $(`<li id='user' class='nav-item'><a class='nav-link' href='#'><i class='fas fa-user'></i> ${loggedUser.Username}</a></li>`).insertAfter("ul>li>a[href^='contact.html']");
     }
 
     $("#logout").on("click", function(){
