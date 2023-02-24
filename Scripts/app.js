@@ -1,3 +1,13 @@
+/*
+Name: Conner Tamane (100754614) & Grayson Closs (100597686)
+Date Completed: January 24, 2023,
+Course: WEBD6201
+Description: This is the app.js file for our Web Development Work. It Includes changes from the previous assignment to
+function correctly for assignment 2. Here we add a function for validating the register page user inputs. Additionally,
+a user class has been created before the IIFE. A link has also been created displaying the username of the user signed in
+between the Contact Us link and the logout/login link.
+*/
+
 "use strict";
 
 //IIFE - Immediately Invoked Function Expression
@@ -269,6 +279,29 @@ function ValidateField(input_field_id, reg_expr, err_msg) {
     });
 }
 
+function ValidateRegisterFields(input_field_id, reg_expr, err_msg) {
+    console.log("Test Name Function");
+
+    let ErrorMessage = $("#ErrorMessage");
+
+    $(input_field_id).on("blur", function(){
+
+        let name = $(this).val();
+        if(!reg_expr.test(name)){
+            //fail validation
+            $(this).trigger("focus").trigger("select");
+            ErrorMessage.addClass("alert alert-danger").text(err_msg).show();
+        }else {
+            //pass validation
+            // messageArea.removeClass("alert-danger").addClass("alert-success").text(
+            //     "Succes");
+            ErrorMessage.removeAttr("class").hide();
+
+        }
+    });
+}
+
+
 function ValidateContactForm(){
     new ValidateField("#Name",
         /^([A-Z][a-z]{1,3}\.?\s)?([A-Z][a-z]+)+([\s,-]([A-z][a-z]+))*$/,
@@ -279,6 +312,19 @@ function ValidateContactForm(){
     new ValidateField("#phoneNum",
         /^(\+\d{1,3}[\s-.])?\(?\d{3}\)?[\s-.]?\d{3}[\s-.]\d{4}$/,
         "Please enter a valid Phone number (000-000-0000)");
+}
+
+function ValidateRegisterForm(){
+    new ValidateRegisterFields("#FirstName", /^[a-zA-Z]{2,}$/,
+        "Please enter a valid First Name (Minimum 2 characters)");
+    new ValidateRegisterFields("#lastName", /^[a-zA-Z]{2,}$/,
+        "Please enter a valid Last Name (Minimum 2 characters)");
+    new ValidateRegisterFields("#username", /^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){4,18}[a-zA-Z0-9]$/,
+                        "Please enter a valid Username (must be between 6 and 20 characters");
+    new ValidateRegisterFields("#emailAddress", /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,10}$/,
+                        "Please enter a valid Email Address");
+    new ValidateRegisterFields("#password", /^.{6,}$/,
+                        "Please enter a valid password (must be 6 characters in length)");
 }
 
 function DisplayContactPage() {
@@ -301,14 +347,34 @@ function DisplayContactPage() {
 
 
            let contactInfo = new core.Contact(fullName.value, contactNumber.value, emailAddress.value);
-           //console.log(contactInfo);
-           //setTimeout(() => {  console.log("Im Free!"); }, 5000);
+
            if(contactInfo.serialize()){
                let key = contactInfo.FullName.substring(0,1) + Date.now();
                localStorage.setItem(key, contactInfo.serialize());
            }
        }
     });
+}
+
+function DisplayRegisterPage() {
+    ValidateRegisterForm();
+
+    let sendButton = document.getElementById("submitButton");
+    let firstName  = document.getElementById("FirstName");
+    let lastName = document.getElementById("lastName");
+    let username = document.getElementById("username");
+    let emailAddress = document.getElementById("emailAddress");
+    let password = document.getElementById("password");
+
+    /*sendButton.addEventListener("click", function()){
+        let userInfo = new core.User(firstName.value, lastName.value, username.value, emailAddress.value, password.value);
+
+        if(userInfo.serialize()){
+            let key = userInfo.
+        }
+    }*/
+
+
 }
 
 function DisplayAboutPage() {
@@ -376,9 +442,6 @@ function CheckLogin() {
     })
 }
 
-function DisplayRegisterPage() {
-
-}
 
 function DisplayEditContact() {
 
