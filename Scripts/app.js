@@ -374,10 +374,10 @@ function CheckLogin() {
         let userData = sessionStorage.getItem("user");
         let loggedUser = new core.User();
         loggedUser.deserialize(userData);
-        console.log(loggedUser.Username());
+        console.log(loggedUser.Username);
         $("#login").html(`<a id="logout" class="nav-link" href="#">
             <i class="fas fa-sign-out-alt"></i> Logout</a>`);
-        $(`<li id='user' class='nav-item'><a class='nav-link' href='#'><i class='fas fa-user'></i> ${userName}</a></li>`).insertAfter("ul>li>a[href^='contact.html']");
+        $(`<li id='user' class='nav-item'><a class='nav-link' href='#'><i class='fas fa-user'></i> ${loggedUser.Username}</a></li>`).insertAfter("ul>li>a[href^='contact.html']");
     }
 
     $("#logout").on("click", function(){
