@@ -10,6 +10,8 @@ between the Contact Us link and the logout/login link.
 
 "use strict";
 
+
+
 //IIFE - Immediately Invoked Function Expression
 (function(){
 
@@ -20,7 +22,7 @@ between the Contact Us link and the logout/login link.
 
         AjaxRequest("GET", "header.html", LoadHeader);
 
-        AjaxRequest("GET", "login.html", CheckLogin);
+
 
         switch(document.title){
             case "Home":
@@ -56,6 +58,7 @@ between the Contact Us link and the logout/login link.
     window.addEventListener("load", Start);
     //if(document.title === "Contact"){DisplayContactPage();}
     //window.addEventListener("load", Debugging);
+
 })();
 
 function AjaxRequest(method, url, callback){
@@ -83,6 +86,7 @@ function LoadHeader(html_data){
 
     $("header").html(html_data);
     $(`li>a:contains(${document.title})`).addClass("active");
+    CheckLogin();
     //$("a.navbar-brand").()
 }
 
@@ -315,7 +319,7 @@ function ValidateContactForm(){
 }
 
 function ValidateRegisterForm(){
-    new ValidateRegisterFields("#FirstName", /^[a-zA-Z]{2,}$/,
+    new ValidateRegisterFields("#firstName", /^[a-zA-Z]{2,}$/,
         "Please enter a valid First Name (Minimum 2 characters)");
     new ValidateRegisterFields("#lastName", /^[a-zA-Z]{2,}$/,
         "Please enter a valid Last Name (Minimum 2 characters)");
@@ -325,6 +329,7 @@ function ValidateRegisterForm(){
                         "Please enter a valid Email Address");
     new ValidateRegisterFields("#password", /^.{6,}$/,
                         "Please enter a valid password (must be 6 characters in length)");
+
 }
 
 function DisplayContactPage() {
@@ -359,22 +364,72 @@ function DisplayContactPage() {
 function DisplayRegisterPage() {
     ValidateRegisterForm();
 
-    let sendButton = document.getElementById("submitButton");
-    let firstName  = document.getElementById("FirstName");
-    let lastName = document.getElementById("lastName");
-    let username = document.getElementById("username");
-    let emailAddress = document.getElementById("emailAddress");
-    let password = document.getElementById("password");
+    let errorMessage = $("#ErrorMessage");
 
-    /*sendButton.addEventListener("click", function()){
-        let userInfo = new core.User(firstName.value, lastName.value, username.value, emailAddress.value, password.value);
 
-        if(userInfo.serialize()){
-            let key = userInfo.
+
+
+    $("#submitButton").on("click", function(){
+        event.preventDefault();
+        if(firstName.value !== "" && lastName.value !== "" && username.value !== ""
+            && emailAddress.value !== ""
+            && password.value !== "" && confirmPassword.value !== "" ){
+
+            let success = false;
+
+            let newUser = new core.User(firstName.value, lastName.value, username.value, emailAddress.value, password.value);
+
+            ////
+
+    $(document).ready(function(){
+            $.getJSON("../data/user.json", function(data) {
+                $.each(data, function (){
+                    $.each(this, function(key, value){
+                        $("#user").append(JSON.stringify(newUser.toJSON()));
+                        });
+                    });
+                });
+            });
+            // $.get("../data/user.json", function(data){
+            //
+            //     for(const u of data.user){
+            //         if(username.value === u.Username && password.value === u.Password){
+            //             newUser.fromJSON(u);
+            //             success = true;
+            //             break;
+            //         }
+            //     }
+            //     if(success){
+            //
+            //         sessionStorage.setItem("user", newUser.serialize());
+            //         console.log(sessionStorage.getItem("user"));
+            //         messageArea.removeAttr("class").hide();
+            //
+            //         CheckLogin();
+            //
+            //     }else{
+            //         $("#username").trigger("focus").trigger("select");
+            //         messageArea.addClass("alert alert-danger")
+            //             .text("Error: Invalid Credentials").show();
+            //     }
+            //});
+
+            $("#cancelButton").on("click", function() {
+
+                document.forms[0].reset();
+                location.href = "index.html";
+
+            });
+        } else if(confirmPassword.value !== password.value){
+            errorMessage.addClass("alert alert-danger");
+            errorMessage.show().text("Passwords don't match! :)");
         }
-    }*/
-
-
+        else {
+            console.log("i am here");
+            errorMessage.addClass("alert alert-danger");
+            errorMessage.show().text("Fill out the form!");
+        }
+    });
 }
 
 function DisplayAboutPage() {
@@ -435,7 +490,11 @@ function DisplayLoginPage() {
 
 function CheckLogin() {
 
+    console.log("checklogin loaded up boi");
+
     if(sessionStorage.getItem("user")){
+
+        console.log("in the if in checklogin");
 
         let userData = sessionStorage.getItem("user");
         let loggedUser = new core.User();
@@ -443,7 +502,11 @@ function CheckLogin() {
         console.log(loggedUser.Username);
         $("#login").html(`<a id="logout" class="nav-link" href="#">
             <i class="fas fa-sign-out-alt"></i> Logout</a>`);
-        $(`<li id='user' class='nav-item'><a class='nav-link' href='#'><i class='fas fa-user'></i> ${loggedUser.Username}</a></li>`).insertAfter("ul>li>a[href^='contact.html']");
+        $(`<li id='user' class='nav-item'><a class='nav-link' href='#'><i class='fas fa-user'></i> ${loggedUser.Username}</a></li>`).insertAfter("ul>li#contact");
+        if(document.title === "login.html")
+        {
+            location.href = "index.html";
+        }
     }
 
     $("#logout").on("click", function(){
