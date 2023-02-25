@@ -87,6 +87,7 @@ function LoadHeader(html_data){
     $("header").html(html_data);
     $(`li>a:contains(${document.title})`).addClass("active");
     CheckLogin();
+    SiteWide();
     //$("a.navbar-brand").()
 }
 
@@ -379,40 +380,16 @@ function DisplayRegisterPage() {
 
             let newUser = new core.User(firstName.value, lastName.value, username.value, emailAddress.value, password.value);
 
-            ////
-
-    $(document).ready(function(){
-            $.getJSON("../data/user.json", function(data) {
-                $.each(data, function (){
-                    $.each(this, function(key, value){
-                        $("#user").append(JSON.stringify(newUser.toJSON()));
-                        });
-                    });
-                });
-            });
-            // $.get("../data/user.json", function(data){
+            let jsonUser = newUser.toJSON();
+            console.log(jsonUser);
+            // import jsonfile from "./require";
+            // const file = '../data/user.json';
+            // const obj = {jsonUser};
             //
-            //     for(const u of data.user){
-            //         if(username.value === u.Username && password.value === u.Password){
-            //             newUser.fromJSON(u);
-            //             success = true;
-            //             break;
-            //         }
-            //     }
-            //     if(success){
+            // jsonfile.writeFile(file, obj, function (err){
             //
-            //         sessionStorage.setItem("user", newUser.serialize());
-            //         console.log(sessionStorage.getItem("user"));
-            //         messageArea.removeAttr("class").hide();
-            //
-            //         CheckLogin();
-            //
-            //     }else{
-            //         $("#username").trigger("focus").trigger("select");
-            //         messageArea.addClass("alert alert-danger")
-            //             .text("Error: Invalid Credentials").show();
-            //     }
-            //});
+            // })
+            location.href = "register.html";
 
             $("#cancelButton").on("click", function() {
 
@@ -571,6 +548,30 @@ function DisplayEditContact() {
 
     }
 
+}
+
+function SiteWide (){
+
+    let newName = document.getElementsByTagName("li")[1];
+    newName.innerHTML = "<a class=\"nav-link\" href=\"products.html\"><i class=\"fa-solid fa-cart-shopping\"></i> Projects</a>";
 
 
+    let ulHeader = document.getElementsByTagName("ul")[0];
+    let hrTag = document.createElement("li");
+    hrTag.setAttribute("id", "humanResources");
+    hrTag.setAttribute("class", "nav-item");
+    ulHeader.getElementsByTagName("li")[3].insertAdjacentElement("afterend", hrTag);
+
+    hrTag.innerHTML = "<a class=\"nav-link\" href=\"hr.html\"><i class=\"fa-solid fa-people-group\"></i> Human Resources</a>";
+
+    let footer = document.getElementsByTagName("main")[0];
+    let footerGuts = "<footer class=\"footer mt-auto bg-dark fixed-bottom\">\n" +
+        "  <div class=\"container align-content-right\">\n" +
+        "    <span id=\"footer\" class=\"text-muted\"></span>\n" +
+        "  </div>\n" +
+        "</footer>";
+    footer.insertAdjacentHTML("afterend", footerGuts);
+    let currentDate = "© 2023 CG, Inc. All rights reserved. \t" + new Date().toLocaleDateString();
+    let footerDate = document.getElementById("footer");
+    footerDate.innerText = currentDate;
 }
