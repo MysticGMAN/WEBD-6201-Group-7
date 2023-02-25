@@ -1,6 +1,6 @@
 /*
 Name: Conner Tamane (100754614) & Grayson Closs (100597686)
-Date Completed: January 24, 2023,
+Date Completed: Feb 19, 2023,
 Course: WEBD6201
 Description: This is the app.js file for our Web Development Work. It Includes changes from the previous assignment to
 function correctly for assignment 2. Here we add a function for validating the register page user inputs. Additionally,
@@ -382,6 +382,7 @@ function DisplayRegisterPage() {
 
             let jsonUser = newUser.toJSON();
             console.log(jsonUser);
+            setTimeout(function(){location.href = "register.html"}, 4000);
             // import jsonfile from "./require";
             // const file = '../data/user.json';
             // const obj = {jsonUser};
@@ -389,14 +390,7 @@ function DisplayRegisterPage() {
             // jsonfile.writeFile(file, obj, function (err){
             //
             // })
-            location.href = "register.html";
-
-            $("#cancelButton").on("click", function() {
-
-                document.forms[0].reset();
-                location.href = "index.html";
-
-            });
+            
         } else if(confirmPassword.value !== password.value){
             errorMessage.addClass("alert alert-danger");
             errorMessage.show().text("Passwords don't match! :)");
