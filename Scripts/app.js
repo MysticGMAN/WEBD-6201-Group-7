@@ -54,6 +54,7 @@ between the Contact Us link and the logout/login link.
         }
     }
     window.addEventListener("load", Start);
+    window.addEventListener("load", SiteWide);
     //if(document.title === "Contact"){DisplayContactPage();}
     //window.addEventListener("load", Debugging);
 })();
@@ -279,6 +280,13 @@ function ValidateField(input_field_id, reg_expr, err_msg) {
     });
 }
 
+/**
+ * A function to validate the text on the form that is part of the register.html page
+ * @param {string} input_field_id Takes in the html element id
+ * @param {RegExp} reg_expr Takes in a Regex Expression
+ * @param {string} err_msg An error message to be displayed
+ * @constructor
+ */
 function ValidateRegisterFields(input_field_id, reg_expr, err_msg) {
     console.log("Test Name Function");
 
@@ -301,6 +309,9 @@ function ValidateRegisterFields(input_field_id, reg_expr, err_msg) {
     });
 }
 
+/**
+ * A function to validate the user input of the Contact form using regex
+ */
 function ValidateContactForm(){
     new ValidateField("#Name",
         /^([A-Z][a-z]{1,3}\.?\s)?([A-Z][a-z]+)+([\s,-]([A-z][a-z]+))*$/,
@@ -313,6 +324,9 @@ function ValidateContactForm(){
         "Please enter a valid Phone number (000-000-0000)");
 }
 
+/**
+ * A function to validate the user input of the Register form using regex
+ */
 function ValidateRegisterForm(){
     new ValidateRegisterFields("#FirstName", /^[a-zA-Z]{2,}$/,
         "Please enter a valid First Name (Minimum 2 characters)");
@@ -326,6 +340,9 @@ function ValidateRegisterForm(){
                         "Please enter a valid password (must be 6 characters in length)");
 }
 
+/**
+ * A function to validate and store the user input data for the contact page
+ */
 function DisplayContactPage() {
     console.log("i am in DisplayContactPage function");
 
@@ -355,6 +372,9 @@ function DisplayContactPage() {
     });
 }
 
+/**
+ * A function to validate and store the user input data for the register page
+ */
 function DisplayRegisterPage() {
     ValidateRegisterForm();
 
@@ -388,6 +408,9 @@ function DisplayServicesPage() {
 
 }
 
+/**
+ * A function to validate and redirect the user from the login page
+ */
 function DisplayLoginPage() {
     console.log("login page loaded");
 
@@ -432,6 +455,9 @@ function DisplayLoginPage() {
     });
 }
 
+/**
+ * A function to check if the user entered existing login details
+ */
 function CheckLogin() {
 
     if(sessionStorage.getItem("user")){
@@ -451,6 +477,9 @@ function CheckLogin() {
     })
 }
 
+/**
+ * A function to
+ */
 
 function DisplayEditContact() {
 
@@ -509,4 +538,32 @@ function DisplayEditContact() {
 
 
 
+
+}
+function SiteWide(){
+
+    let background = document.getElementsByTagName("body")[0];
+    background.setAttribute("id", "body");
+    background.setAttribute("class", "background");
+
+
+    let ulHeader = document.getElementsByTagName("ul")[0];
+    let hrTag = document.createElement("li");
+    hrTag.setAttribute("id", "humanResources");
+    hrTag.setAttribute("class", "nav-item");
+    ulHeader.getElementsByTagName("li")[3].insertAdjacentElement("afterend", hrTag);
+
+    let hrGuts = "<a class=\"nav-link\" href=\"hr.html\"><i class=\"fa-solid fa-people-group\"></i> Human Resources</a>";
+    hrTag.innerHTML = hrGuts;
+
+    let footer = document.getElementsByTagName("main")[0];
+    let footerGuts = "<footer class=\"footer mt-auto bg-dark fixed-bottom\">\n" +
+        "  <div class=\"container align-content-right\">\n" +
+        "    <span id=\"footer\" class=\"text-muted\"></span>\n" +
+        "  </div>\n" +
+        "</footer>";
+    footer.insertAdjacentHTML("afterend", footerGuts);
+    let currentDate = "© 2023 CG, Inc. All rights reserved. \t" + new Date().toLocaleDateString();
+    let footerDate = document.getElementById("footer");
+    footerDate.innerText = currentDate;
 }
